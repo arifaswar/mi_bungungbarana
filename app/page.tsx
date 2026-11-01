@@ -1,6 +1,16 @@
 import React from 'react';
+import { cacheLife } from 'next/cache';
 
-export default function Home() {
+// Fungsi khusus untuk merekam tahun saat build
+async function getCurrentYear() {
+  'use cache';
+  cacheLife('max'); // Mengunci cache agar bernilai permanen selama setahun penuh
+  return new Date().getFullYear();
+}
+
+
+export default async function Home() {
+  const currentYear = await getCurrentYear();
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
       
@@ -111,10 +121,9 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs">
-          © {new Date().getFullYear()} MI Bungung Barana. All rights reserved.
+          © {currentYear} MI Bungung Barana. All rights reserved.
         </div>
       </footer>
-
     </div>
   );
 }
